@@ -269,6 +269,12 @@ class TestScopeManager implements ScopeManager {
         }
 
         @Override
+        TraceScope activate(boolean isAsyncPropagating) {
+          TestTraceScope.this.setAsyncPropagating(isAsyncPropagating)
+          return TestTraceScope.this
+        }
+
+        @Override
         void cancel() {
         }
       }

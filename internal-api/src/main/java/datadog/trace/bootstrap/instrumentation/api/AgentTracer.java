@@ -37,8 +37,9 @@ public class AgentTracer {
     return get().startSpan(spanName, parent, startTimeMicros);
   }
 
+  // Inherits the async propagation of the current scope
   public static AgentScope activateSpan(final AgentSpan span) {
-    return get().activateSpan(span, ScopeSource.INSTRUMENTATION, false);
+    return get().activateSpan(span, ScopeSource.INSTRUMENTATION);
   }
 
   public static AgentScope activateSpan(final AgentSpan span, boolean isAsyncPropagating) {
@@ -470,6 +471,11 @@ public class AgentTracer {
 
     @Override
     public TraceScope activate() {
+      return NoopAgentScope.INSTANCE;
+    }
+
+    @Override
+    public TraceScope activate(boolean isAsyncPropagating) {
       return NoopAgentScope.INSTANCE;
     }
 

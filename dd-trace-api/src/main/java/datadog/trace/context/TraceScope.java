@@ -40,8 +40,20 @@ public interface TraceScope extends Closeable {
      *
      * <p>Consider calling this in a try-with-resources initialization block to ensure the returned
      * scope is closed properly.
+     *
+     * <p>Inherits the async propagation of the current scope.
      */
     TraceScope activate();
+
+    /**
+     * Activate the continuation.
+     *
+     * <p>Should be called on the child thread.
+     *
+     * <p>Consider calling this in a try-with-resources initialization block to ensure the returned
+     * scope is closed properly.
+     */
+    TraceScope activate(boolean isAsyncPropagating);
 
     /** Allow trace to stop waiting on this continuation for reporting. */
     void cancel();

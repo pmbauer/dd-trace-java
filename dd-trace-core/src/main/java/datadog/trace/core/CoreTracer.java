@@ -349,8 +349,9 @@ public class CoreTracer implements AgentTracer.TracerAPI {
         .start();
   }
 
+  // Inherits the async propagation of the current scope
   public AgentScope activateSpan(final AgentSpan span) {
-    return scopeManager.activate(span, ScopeSource.INSTRUMENTATION, false);
+    return scopeManager.activate(span, ScopeSource.INSTRUMENTATION);
   }
 
   @Override

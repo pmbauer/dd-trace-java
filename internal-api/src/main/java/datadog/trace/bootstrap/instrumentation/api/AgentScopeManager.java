@@ -7,6 +7,7 @@ import datadog.trace.context.TraceScope;
  */
 public interface AgentScopeManager {
 
+  // Inherits the async propagation of the current scope
   AgentScope activate(AgentSpan span, ScopeSource source);
 
   AgentScope activate(AgentSpan span, ScopeSource source, boolean isAsyncPropagating);

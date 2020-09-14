@@ -451,14 +451,26 @@ public class ContinuableScopeManager implements AgentScopeManager {
 
     @Override
     public AgentScope activate() {
+      return activate(false, /* ignored */ false);
+    }
+
+    @Override
+    public AgentScope activate(boolean isAsyncPropagating) {
+      return activate(true, isAsyncPropagating);
+    }
+
+    private AgentScope activate(boolean overrideAsyncPropagation, boolean isAsyncPropagating) {
       if (used.compareAndSet(false, true)) {
-        final AgentScope scope = scopeManager.handleSpan(this, spanUnderScope, source, true, false);
+        final AgentScope scope =
+            scopeManager.handleSpan(
+                this, spanUnderScope, source, overrideAsyncPropagation, isAsyncPropagating);
         log.debug("t_id={} -> activating continuation {}", spanUnderScope.getTraceId(), this);
         return scope;
       } else {
         log.debug(
             "Failed to activate continuation. Reusing a continuation not allowed. Spans may be reported separately.");
-        return scopeManager.handleSpan(null, spanUnderScope, source, true, false);
+        return scopeManager.handleSpan(
+            null, spanUnderScope, source, overrideAsyncPropagation, isAsyncPropagating);
       }
     }
 
