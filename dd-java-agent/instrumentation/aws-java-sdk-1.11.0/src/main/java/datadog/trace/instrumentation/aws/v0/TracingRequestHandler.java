@@ -11,9 +11,12 @@ import com.amazonaws.handlers.RequestHandler2;
 import datadog.trace.bootstrap.ContextStore;
 import datadog.trace.bootstrap.instrumentation.api.AgentScope;
 import datadog.trace.bootstrap.instrumentation.api.AgentSpan;
+import datadog.trace.bootstrap.instrumentation.api.UTF8BytesString;
 
 /** Tracing Request Handler */
 public class TracingRequestHandler extends RequestHandler2 {
+
+  private static final CharSequence SPAN_NAME = UTF8BytesString.createConstant("aws.http");
 
   private final AwsSdkClientDecorator decorate;
 
@@ -29,7 +32,7 @@ public class TracingRequestHandler extends RequestHandler2 {
 
   @Override
   public void beforeRequest(final Request<?> request) {
-    final AgentSpan span = startSpan("aws.http");
+    final AgentSpan span = startSpan(SPAN_NAME);
     decorate.afterStart(span);
     decorate.onRequest(span, request);
     request.addHandlerContext(SCOPE_CONTEXT_KEY, activateSpan(span));
